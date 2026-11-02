@@ -7,6 +7,7 @@ resource "aws_ecs_express_gateway_service" "wishifai" {
   execution_role_arn      = "arn:aws:iam::244530008913:role/ecsTaskExecutionRole"
   infrastructure_role_arn = "arn:aws:iam::244530008913:role/service-role/ecsInfrastructureRoleForExpressServices"
   task_role_arn           = aws_iam_role.wishifai_task_role.arn
+  health_check_path       = "/actuator/health"
 
   primary_container {
     image          = "244530008913.dkr.ecr.eu-west-1.amazonaws.com/doing-some-devops:${var.image_tag}"
