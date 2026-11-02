@@ -3,6 +3,7 @@ package no.pgr301.exam.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.DistributionSummary;
 import no.pgr301.exam.model.GiftAnalysis;
 import no.pgr301.exam.model.GiftSuggestion;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,7 @@ public class BedrockService {
     private final BedrockRuntimeClient client;
     private final String modelId;
     private final Timer bedrockTimer;
+    private final DistributionSummary suggestionCountSummary;
 
     public BedrockService(BedrockRuntimeClient client,
                           @Value("${app.bedrock.model-id}") String modelId,
@@ -35,6 +37,9 @@ public class BedrockService {
         this.modelId = modelId;
         this.bedrockTimer = Timer.builder("bedrock.converse.duration")
                 .description("Time taken to call Bedrock Converse")
+                .register(meterRegistry);
+        this.suggestionCountSummary = DistributionSummary.builder("gift.suggestions.count")
+                .description("Number of gift suggestions returned per request")
                 .register(meterRegistry);
     }
 
@@ -103,7 +108,9 @@ public class BedrockService {
                 .build());
 
         String text = resp.output().message().content().get(0).text();
-        return parseAnalysis(text);
+        GiftAnalysis analysis = parseAnalysis(text);
+        suggestionCountSummary.record(analysis.suggestions().size());
+        return analysis;
         });
     }
 

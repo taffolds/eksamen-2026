@@ -38,3 +38,11 @@ Jeg har valgt å bruke mitt eget kandidatnummer som nøkkel. Dette kan bli sett 
 Terraform kjører etter container-build, da den avhenger av at imaget faktisk eksisterer i registry til ECR. Hvis den ikke hadde gjort det, så hadde potensielt terraform laget container av feil image, avhengig av når de to jobbene ble ferdige.
 
 Lenke til grønn kjøring: https://github.com/taffolds/eksamen-2026/actions/runs/41438374582
+
+## Oppgave 3
+
+### 3A
+
+Jeg har valgt å lage to businessmetrikker da jeg følte at det ga mer mening for applikasjonen. Jeg har valgt å lage en Counter for mengden bilder analysert. Dette gir innblikk i hvor mye tjenesten blir brukt. Jeg har valgt å ha counteren etter at Rekognition og Bedrock har blitt kalt slik at man får innsikt i hvor mange ganger analyse har skjedd, ikke bare hvor mange ganger endepunktet har blitt kalt.
+
+Jeg har også valgt å bruke en DistributionSummary metrikk for å se hvor mange gaveforslag som blir sendt til til bruker. Det er interessant å vite om det alltid blir sendt tilbake 5 forslag, eller om det kanskje er mindre noen ganger. Jeg kommer også til å bruke denne metrikken i 3B for å sjekke om servicen plutselig sender flere enn 5 forslag til tross for at prompten spesifiserer maks 5 forslag, sånn at man får varsel om at LLMen ikke utfører instruksjonene riktig.
