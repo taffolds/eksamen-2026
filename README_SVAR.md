@@ -46,3 +46,15 @@ Lenke til grønn kjøring: https://github.com/taffolds/eksamen-2026/actions/runs
 Jeg har valgt å lage to businessmetrikker da jeg følte at det ga mer mening for applikasjonen. Jeg har valgt å lage en Counter for mengden bilder analysert. Dette gir innblikk i hvor mye tjenesten blir brukt. Jeg har valgt å ha counteren etter at Rekognition og Bedrock har blitt kalt slik at man får innsikt i hvor mange ganger analyse har skjedd, ikke bare hvor mange ganger endepunktet har blitt kalt.
 
 Jeg har også valgt å bruke en DistributionSummary metrikk for å se hvor mange gaveforslag som blir sendt til til bruker. Det er interessant å vite om det alltid blir sendt tilbake 5 forslag, eller om det kanskje er mindre noen ganger. Jeg kommer også til å bruke denne metrikken i 3B for å sjekke om servicen plutselig sender flere enn 5 forslag til tross for at prompten spesifiserer maks 5 forslag, sånn at man får varsel om at LLMen ikke utfører instruksjonene riktig.
+
+### 3B
+
+Dashboard heter "wishifai-6"
+
+![Dashboard image](customimages/cloudwatchdashboard.jpg)
+
+Jeg har valgt å ha metrikk for antall bilder som har blitt analysert, det kan være interessant å se hvor mye trafikk siden har fått totalt sett over en tidsperiode. Da kan man se om tjenesten er mer populær visse tider av døgnet. Jeg har også valgt å ha metrikk på ECS CPU bruk, for å kunne monitorere hvor mye CPU kraft containeren bruker. Dette kan hjelpe å se om den plutselig blir overbelastet.
+
+De siste to metrikkene har jeg også koblet to forskjellige alarmer på. 
+1. Jeg har sett i prompten at det kan være maks 5 gaveforslag. Det er greit å vite om LLMen begynner å gi for mange forslag da dette begynner å kaste bort tokens og koster penger. 
+2. Jeg har også satt en alarm på hvor lang tid det tar for Rekognition og Bedrock å svare. Hvis de bruker over 10 sekunder, er dette greit å vite. Det betyr at servicene som wishifai er avhengig av er trege, og dermed blir også wishifai treg. Da kan man regne med at brukeropplevelsen er dårlig, og brukere vil tenke at tjenesten ikke fungerer så bra.
