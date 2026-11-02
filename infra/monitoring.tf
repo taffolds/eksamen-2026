@@ -9,7 +9,7 @@ resource "aws_cloudwatch_dashboard" "wishifai" {
             "x": 0, "y": 0, "width": 12, "height": 6,
             "properties": {
                 "title": "Images Analyzed (Business)",
-                "metrics": [["wishifai", "images.analyzed.count"]],
+                "metrics": [["wishifai-6", "images.analyzed.count"]],
                 "period": 60,
                 "stat": "Sum",
                 "region": "eu-west-1"
@@ -20,7 +20,7 @@ resource "aws_cloudwatch_dashboard" "wishifai" {
             "x": 12, "y": 0, "width": 12, "height": 6,
             "properties": {
                 "title": "Gift Suggestions Per Request (Business)",
-                "metrics": [["wishifai", "gift.suggestions.count.max"]],
+                "metrics": [["wishifai-6", "gift.suggestions.count.max"]],
                 "period": 60,
                 "stat": "Sum",
                 "region": "eu-west-1"
@@ -43,8 +43,8 @@ resource "aws_cloudwatch_dashboard" "wishifai" {
             "properties": {
                 "title": "Rekognition + Bedrock Duration (Application)",
                 "metrics": [
-                    ["wishifai", "rekognition.detect_labels.duration.max"],
-                    ["wishifai", "bedrock.converse.duration.max"]
+                    ["wishifai-6", "rekognition.detect_labels.duration.max"],
+                    ["wishifai-6", "bedrock.converse.duration.max"]
                 ],
                 "period": 60,
                 "stat": "Maximum",
@@ -59,7 +59,7 @@ DASHBOARD
 resource "aws_cloudwatch_metric_alarm" "too_many_suggestions" {
   alarm_name          = "wishifai-too-many-suggestions-${var.candidate_number}"
   alarm_description   = "Fires when Bedrock returns more than 5 gift suggestions"
-  namespace           = "wishifai"
+  namespace           = "wishifai-6"
   metric_name         = "gift.suggestions.count.max"
   statistic           = "Maximum"
   period              = 60
@@ -71,7 +71,7 @@ resource "aws_cloudwatch_metric_alarm" "too_many_suggestions" {
 resource "aws_cloudwatch_metric_alarm" "slow_bedrock" {
   alarm_name          = "wishifai-slow-bedrock-${var.candidate_number}"
   alarm_description   = "Fires when Bedrock response time exceeds 10 seconds, indicating degraded LLM performance"
-  namespace           = "wishifai"
+  namespace           = "wishifai-6"
   metric_name         = "bedrock.converse.duration.max"
   statistic           = "Maximum"
   period              = 60
