@@ -32,3 +32,9 @@ Offentlig URL til tjenesten: https://wi-85046072fab9462c8d3542d3075ff0e0.ecs.eu-
 ### 2B
 
 Jeg har valgt å bruke mitt eget kandidatnummer som nøkkel. Dette kan bli sett på som en egen filsti inne i pgr301-terraform-state bucketen, slik at man unngår å skrive filer til andres directories. Jeg har på use_lockfile = true slik at kun en prosess kan bruke den av gangen. Dette gjør at man slipper å korrupte terraform.tfstate filen, og at man ikke får race conditions hvor to forskjellige pipeline-kjøringer kan få konflikt over hvordan staten skal være.
+
+### 2C
+
+Terraform kjører etter container-build, da den avhenger av at imaget faktisk eksisterer i registry til ECR. Hvis den ikke hadde gjort det, så hadde potensielt terraform laget container av feil image, avhengig av når de to jobbene ble ferdige.
+
+Lenke til grønn kjøring: https://github.com/taffolds/eksamen-2026/actions/runs/41438374582
