@@ -26,7 +26,8 @@ resource "aws_iam_role_policy" "wishifai_task_policy" {
           "rekognition:DetectLabels",
           "bedrock:InvokeModel",
           "s3:PutObject",
-          "s3:GetObject"
+          "s3:GetObject",
+          "cloudwatch:PutMetricData"
         ]
         Resource = "*"
       }
